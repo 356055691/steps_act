@@ -107,7 +107,7 @@ export default {
     line-height: 90upx;
     text-align: center;
     position: absolute;
-    bottom: 90upx;
+    bottom: 100upx;
     left: 30upx;
     right: 30upx;
   }

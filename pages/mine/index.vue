@@ -34,7 +34,7 @@ export default {
       addr: '江苏省南京市建邺区团结路200号10楼721室江苏省南京市建邺区团结路200号10楼721室'
     };
   },
-  onLoad() {
+  onShow() {
     uni.getStorage({
       key: 'USER_INFO',
       success: (res) => {

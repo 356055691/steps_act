@@ -85,6 +85,17 @@ export default {
       });
     },
     getSteops() {
+      wx.getWeRunData({
+        success: (data) => {
+          _POST('/record/steps', {
+            encryptedData: data.encryptedData,
+            iv: data.iv,
+            userId: this.isLogin
+          }).then((res) => {
+            console.log(res);
+          });
+        }
+      });
       this.steps = 99999;
     },
     joinFun() {
