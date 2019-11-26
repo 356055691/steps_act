@@ -15,33 +15,77 @@
         {{ steps || '--'}}
       </view>
     </view>
-    <button open-type="getUserInfo" @getuserinfo="getUserInfo" class="login-btn">一键登录</button>
+    <button v-if="!isLogin" open-type="getUserInfo" @getuserinfo="getUserInfo" class="login-btn">一键登录</button>
+    <button v-else class="login-btn">已登录</button>
   </view>
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
+import { _POST } from '../../libs/http';
+
 export default {
   data() {
     return {
-      steps: '',
-      isLogin: false
+      steps: ''
     };
   },
+  computed: {
+    ...mapState({
+      isLogin: state => state.isLogin
+    })
+  },
+  onLoad() {
+    if (this.isLogin) {
+      this.getSteops();
+    }
+  },
   methods: {
+    ...mapMutations({
+      setLogin: 'setLogin',
+      setUser: 'setUser'
+    }),
     getUserInfo(res) {
       if (res && res.detail && res.detail.errMsg === 'getUserInfo:ok') {
         this.userInfo = JSON.parse(res.detail.rawData);
-        this.loginFun();
-        console.log(this.userInfo);
+        uni.setStorage({
+          key: 'USER_INFO',
+          data: this.userInfo,
+          success: () => {
+            this.setUser(this.userInfo);
+            this.loginFun();
+          }
+        });
       }
     },
     loginFun() {
+      uni.showLoading({
+        title: '登录中'
+      });
       uni.login({
         success: (res) => {
-          this.isLogin = true;
-          this.steps = 99999;
+          if (res.code) {
+            _POST('/login/login', {
+              code: res.code
+            }).then((res) => {
+              uni.setStorage({
+                key: 'USER_ID',
+                data: res.userId,
+                success: () => {
+                  this.setLogin(res.userId);
+                  this.getSteops();
+                  uni.hideLoading();
+                }
+              });
+            });
+          } else {
+            console.log('登录失败！' + res.errMsg)
+          }
         }
       });
+    },
+    getSteops() {
+      this.steps = 99999;
     },
     joinFun() {
       if (this.isLogin) {

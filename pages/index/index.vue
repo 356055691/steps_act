@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { _POST } from '../../libs/http';
+
 export default {
   data() {
     return {}
@@ -18,22 +20,13 @@ export default {
     loginFun(res) {
       wx.login({
         success (res) {
-          console.log(res);
           if (res.code) {
             //发起网络请求
-            wx.request({
-              url: 'https://daokeleague.mynatapp.cc/jibu-web/login/login',
-              method: "POST",
-              data: {
+            _POST('/login/login', {
                 code: res.code
-              },
-              header: {
-                "Content-Type": "application/x-www-form-urlencoded"
-              },
-              success(data) {
-                console.log(data);
-              }
-            })
+            }).then((res) => {
+              console.log(res);
+            });
           } else {
             console.log('登录失败！' + res.errMsg)
           }

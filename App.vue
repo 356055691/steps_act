@@ -1,15 +1,40 @@
 <script>
-	export default {
-		onLaunch: function() {
-			console.log('App Launch')
-		},
-		onShow: function() {
-			console.log('App Show')
-		},
-		onHide: function() {
-			console.log('App Hide')
-		}
-	}
+import { mapMutations } from 'vuex';
+
+export default {
+  onLaunch: function() {
+    console.log('App Launch')
+  },
+  onShow: function() {
+    uni.getStorage({
+      key: 'USER_ID',
+      success: (res) => {
+        this.setLogin(res.data);
+      },
+      fail: (error) => {
+        this.setLogin(null);
+      }
+    });
+    uni.getStorage({
+      key: 'USER_INFO',
+      success: (res) => {
+        this.setUser(res.data);
+      },
+      fail: (error) => {
+        this.setUser(null);
+      }
+    });
+  },
+  onHide: function() {
+    console.log('App Hide')
+  },
+  methods: {
+    ...mapMutations({
+      setLogin: 'setLogin',
+      setUser: 'setUser'
+    })
+  }
+};
 </script>
 
 <style>
