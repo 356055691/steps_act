@@ -12,7 +12,8 @@
     <view class="step-c">
       <view class="step">
         <view class="title">我的步数</view>
-        {{ steps || '--'}}
+        <button v-if="noStep" class="no-step" open-type="openSetting">点击开启</button>
+        <text v-else>{{ steps || '--'}}</text>
       </view>
     </view>
     <button v-if="!isLogin" open-type="getUserInfo" @getuserinfo="getUserInfo" class="login-btn">一键登录</button>
@@ -27,7 +28,8 @@ import { _POST } from '../../libs/http';
 export default {
   data() {
     return {
-      steps: ''
+      steps: '',
+      noStep: false
     };
   },
   computed: {
@@ -35,7 +37,7 @@ export default {
       isLogin: state => state.isLogin
     })
   },
-  onLoad() {
+  onShow() {
     if (this.isLogin) {
       this.getSteops();
     }
@@ -85,18 +87,45 @@ export default {
       });
     },
     getSteops() {
-      wx.getWeRunData({
-        success: (data) => {
-          _POST('/record/steps', {
-            encryptedData: data.encryptedData,
-            iv: data.iv,
-            userId: this.isLogin
-          }).then((res) => {
-            console.log(res);
-          });
+      uni.getSetting({
+        success: (res) => {
+          if (JSON.stringify(res.authSetting) === '{}' || res.authSetting['scope.werun'] === undefined) {
+            // 首次校验
+            console.log('首次校验');
+            this.steopFun();
+          } else {
+            const werun = res.authSetting['scope.werun'];
+            if (werun) {
+              // 已同意
+              console.log('已同意');
+              this.steopFun();
+            } else {
+              // 已拒绝
+              console.log('已拒绝');
+              this.noStep = true;
+            }
+          }
         }
       });
-      this.steps = 99999;
+    },
+    steopFun() {
+      wx.getWeRunData({
+        success: (data) => {
+          // _POST('/record/steps', {
+          //   encryptedData: data.encryptedData,
+          //   iv: data.iv,
+          //   userId: this.isLogin
+          // }).then((res) => {
+          //   console.log(res);
+          // });
+          this.steps = 99999;
+          this.noStep = false;
+        },
+        fail: (error) => {
+          console.log(error);
+          this.noStep = true;
+        }
+      });
     },
     joinFun() {
       if (this.isLogin) {
@@ -188,6 +217,14 @@ export default {
       font-size: 70upx;
       font-weight: bold;
       margin: 0 auto;
+    }
+    .no-step {
+      font-size: 30upx;
+      background: none;
+      border: none;
+      color: #fff;
+      display: inline-block;
+      margin-top: 120upx !important;
     }
   }
   .login-btn {
