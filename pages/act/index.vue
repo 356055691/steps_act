@@ -1,14 +1,13 @@
 <template>
   <view class="page-act">
-    <view class="banner">
-      <view class="pic">
-        <image src="/static/banner.jpg"></image>
-      </view>
-      <view class="des">
-        活动简介：联合在校大学生之中有公益之心的青年，一起锻炼身体，做扶贫公益的联盟。让青年刀客们拥有自律向上，心地善良和强健的体魄。
-      </view>
-      <view class="join-btn" @tap="joinFun">我要参加&nbsp;&gt;&gt;</view>
-    </view>
+    <swiper class="swiper" :circular="true">
+      <swiper-item v-for="(item, index) in adList" :key="index" @tap="joinFun(item)">
+        <view class="swiper-item">
+          <image :src="item.pic"></image>
+          <view class="intro">{{ item.activity_name }}</view>
+        </view>
+      </swiper-item>
+    </swiper>
     <view class="step-c">
       <view class="step">
         <view class="title">我的步数</view>
@@ -29,13 +28,17 @@ export default {
   data() {
     return {
       steps: '',
-      noStep: false
+      noStep: false,
+      adList: []
     };
   },
   computed: {
     ...mapState({
       isLogin: state => state.isLogin
     })
+  },
+  onLoad() {
+    this.getAds();
   },
   onShow() {
     if (this.isLogin) {
@@ -47,6 +50,13 @@ export default {
       setLogin: 'setLogin',
       setUser: 'setUser'
     }),
+    getAds() {
+      _POST('/activity/list', {}).then((res) => {
+        if (res && res.code && res.code === 'S') {
+          this.adList = res.data;
+        }
+      });
+    },
     getUserInfo(res) {
       if (res && res.detail && res.detail.errMsg === 'getUserInfo:ok') {
         this.userInfo = JSON.parse(res.detail.rawData);
@@ -91,17 +101,14 @@ export default {
         success: (res) => {
           if (JSON.stringify(res.authSetting) === '{}' || res.authSetting['scope.werun'] === undefined) {
             // 首次校验
-            console.log('首次校验');
             this.steopFun();
           } else {
             const werun = res.authSetting['scope.werun'];
             if (werun) {
               // 已同意
-              console.log('已同意');
               this.steopFun();
             } else {
               // 已拒绝
-              console.log('已拒绝');
               this.noStep = true;
             }
           }
@@ -116,7 +123,6 @@ export default {
             iv: data.iv,
             userId: this.isLogin
           }).then((res) => {
-            console.log(res);
             this.steps = 99999;
             this.noStep = false;
           });
@@ -127,10 +133,12 @@ export default {
         }
       });
     },
-    joinFun() {
+    joinFun(data) {
       if (this.isLogin) {
+        let params = `name=${data.activity_name}&id=${data.id}&num=${data.limit_num}&price=${data.price}&steps=${data.steps}&status=${data.status}`;
+        params = params.replace('?', '').replace('?', '');
         uni.navigateTo({
-          url: '/pages/pay/index'
+          url: `/pages/pay/index?${params}`
         });
       } else {
         uni.showModal({
@@ -152,43 +160,32 @@ export default {
 
 <style lang="scss" scoped>
 .page-act {
-  .banner {
-    width: 100%;
+  .swiper {
+    width: 750upx;
     height: 480upx;
-    position: relative;
-    .pic {
+    .swiper-item {
       width: 100%;
       height: 100%;
+      position: relative;
       image {
         width: 100%;
         height: 100%;
       }
-    }
-    .des {
-      position: absolute;
-      width: 750upx;
-      height: 480upx;
-      padding: 30upx;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.3);
-      color: #fff;
-      font-size: 30upx;
-    }
-    .join-btn {
-      width: 200upx;
-      height: 40upx;
-      color: #fff;
-      font-size: 30upx;
-      line-height: 40upx;
-      text-align: center;
-      position: absolute;
-      bottom: 30upx;
-      right: 30upx;
-      font-weight: bold;
-      text-decoration: underline;
+      .intro {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.5);
+        padding: 0 30upx;
+        color: #444;
+        text-align: right;
+        width: 750upx;
+        height: 80upx;
+        line-height: 80upx;
+        text-align: right;
+        font-size: 30upx;
+      }
     }
   }
   .step-c {
