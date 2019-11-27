@@ -111,15 +111,15 @@ export default {
     steopFun() {
       wx.getWeRunData({
         success: (data) => {
-          // _POST('/record/steps', {
-          //   encryptedData: data.encryptedData,
-          //   iv: data.iv,
-          //   userId: this.isLogin
-          // }).then((res) => {
-          //   console.log(res);
-          // });
-          this.steps = 99999;
-          this.noStep = false;
+          _POST('/record/steps', {
+            encryptedData: data.encryptedData,
+            iv: data.iv,
+            userId: this.isLogin
+          }).then((res) => {
+            console.log(res);
+            this.steps = 99999;
+            this.noStep = false;
+          });
         },
         fail: (error) => {
           console.log(error);

@@ -14,6 +14,10 @@ const store = new Vuex.Store({
     },
     setUser(state, value) {
       state.user = value;
+    },
+    exit(state, value) {
+      state.isLogin = null;
+      state.user = null;
     }
   }
 });

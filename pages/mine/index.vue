@@ -2,9 +2,10 @@
   <view class="page-mine">
     <view class="base-info">
       <view class="pic">
-        <image :src="userInfo.avatarUrl"></image>
+        <image v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl"></image>
       </view>
       <view class="name">{{ userInfo.nickName || '--'}}</view>
+      <view v-if="isLogin" class="exit" @tap="exitFun">注销</view>
     </view>
     <view class="info-list">
       <view class="addr-c">
@@ -20,13 +21,16 @@
         <view class="text">{{ addr }}</view>
       </view>
     </view>
-    <navigator url="/pages/mine/edit">
+    <navigator v-if="isLogin" url="/pages/mine/edit">
       <view class="edit-btn">修改收货信息</view>
     </navigator>
+    <view v-else class="edit-btn disabled">修改收货信息</view>
   </view>
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
+
 export default {
   data() {
     return {
@@ -41,6 +45,24 @@ export default {
         this.userInfo = res.data;
       }
     });
+  },
+  computed: {
+    ...mapState({
+      isLogin: state => state.isLogin
+    })
+  },
+  methods: {
+    ...mapMutations({
+      setLogin: 'setLogin',
+      setUser: 'setUser',
+      exit: 'exit'
+    }),
+    exitFun() {
+      this.userInfo = {};
+      this.exit();
+      this.setUser(null);
+      this.setLogin(null);
+    }
   }
 };
 </script>
@@ -74,13 +96,24 @@ export default {
       }
     }
     .name {
-      width: 570upx;
+      width: 450upx;
       height: 100upx;
       line-height: 100upx;
       color: #fff;
       font-size: 36upx;
       padding-left: 30upx;
       float: left;
+    }
+    .exit {
+      width: 120upx;
+      height: 50upx;
+      line-height: 50upx;
+      margin-top: 25upx;
+      text-align: center;
+      color: #a5cd34;
+      background: #fff;
+      border-radius: 10upx;
+      float: right;
     }
   }
   .addr-c {
@@ -114,6 +147,11 @@ export default {
     bottom: 90upx;
     left: 30upx;
     right: 30upx;
+  }
+  .disabled {
+    background-color: #ccc;
+    color: #fff;
+    box-shadow: none;
   }
 }
 </style>
