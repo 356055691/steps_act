@@ -12,7 +12,7 @@ export default {
         this.setLogin(res.data);
       },
       fail: (error) => {
-        this.setLogin(null);
+        uni.clearStorage();
       }
     });
     uni.getStorage({
@@ -21,7 +21,7 @@ export default {
         this.setUser(res.data);
       },
       fail: (error) => {
-        this.setUser(null);
+        uni.clearStorage();
       }
     });
   },

@@ -60,8 +60,7 @@ export default {
     exitFun() {
       this.userInfo = {};
       this.exit();
-      this.setUser(null);
-      this.setLogin(null);
+      uni.clearStorage();
     }
   }
 };
