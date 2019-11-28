@@ -7,6 +7,12 @@
 			}
     },
     {
+			"path": "pages/act/list",
+			"style": {
+				"navigationBarTitleText": "获奖名单"
+			}
+    },
+    {
 			"path": "pages/pay/index",
 			"style": {
 				"navigationBarTitleText": "活动报名"

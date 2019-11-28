@@ -36,7 +36,9 @@
     </view>
     <view v-if="status === '0'" class="pay-btn disabled">未开始</view>
     <view v-if="status === '1'" class="pay-btn" @tap="payFun">微信支付</view>
-    <view v-if="status === '2'" class="pay-btn disabled">已结束</view>
+    <navigator v-if="isLogin" url="/pages/act/list">
+      <view v-if="status === '2'" class="pay-btn">查看获奖名单</view>
+    </navigator>
   </view>
 </template>
 

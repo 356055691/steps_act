@@ -1,6 +1,6 @@
 <template>
   <view class="page-act">
-    <swiper class="swiper" :circular="true">
+    <swiper class="swiper" :circular="true" :indicator-dots="true">
       <swiper-item v-for="(item, index) in adList" :key="index" @tap="joinFun(item)">
         <view class="swiper-item">
           <image :src="item.pic"></image>
@@ -80,15 +80,17 @@ export default {
             _POST('/login/login', {
               code: res.code
             }).then((res) => {
-              uni.setStorage({
-                key: 'USER_ID',
-                data: res.userId,
-                success: () => {
-                  this.setLogin(res.userId);
-                  this.getSteops();
-                  uni.hideLoading();
-                }
-              });
+              if (res && res.code && res.code === 'Y') {
+                uni.setStorage({
+                  key: 'USER_ID',
+                  data: res.userId,
+                  success: () => {
+                    this.setLogin(res.userId);
+                    this.getSteops();
+                    uni.hideLoading();
+                  }
+                });
+              }
             });
           } else {
             console.log('登录失败！' + res.errMsg)
@@ -123,8 +125,12 @@ export default {
             iv: data.iv,
             userId: this.isLogin
           }).then((res) => {
-            this.steps = 99999;
-            this.noStep = false;
+            if (res && res.code && res.code === 'Y') {
+              if (res.data && res.data.steps) {
+                this.steps = res.data.steps;
+                this.noStep = false;
+              }
+            }
           });
         },
         fail: (error) => {
@@ -136,7 +142,7 @@ export default {
     joinFun(data) {
       if (this.isLogin) {
         let params = `name=${data.activity_name}&id=${data.id}&num=${data.limit_num}&price=${data.price}&steps=${data.steps}&status=${data.status}`;
-        params = params.replace('?', '').replace('?', '');
+        params = params.replace('?', '').replace('?', ''); // TODO
         uni.navigateTo({
           url: `/pages/pay/index?${params}`
         });
@@ -175,7 +181,7 @@ export default {
         position: absolute;
         left: 0;
         right: 0;
-        bottom: 0;
+        top: 0;
         background-color: rgba(255, 255, 255, 0.5);
         padding: 0 30upx;
         color: #444;
@@ -211,7 +217,7 @@ export default {
       line-height: 280upx;
       background-color: #a5cd34;
       border: solid 10upx #d9f197;
-      font-size: 70upx;
+      font-size: 60upx;
       font-weight: bold;
       margin: 0 auto;
     }
