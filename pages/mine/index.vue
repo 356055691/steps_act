@@ -11,15 +11,15 @@
     <view class="info-list">
       <view class="addr-c">
         <view class="title">收货人</view>
-        <view class="text">张三</view>
+        <view class="text">{{ baseInfo.contact_name }}</view>
       </view>
       <view class="addr-c">
         <view class="title">手机号</view>
-        <view class="text">16666666666</view>
+        <view class="text">{{ baseInfo.contact_tel }}</view>
       </view>
       <view class="addr-c">
         <view class="title">收货地址</view>
-        <view class="text">{{ addr }}</view>
+        <view class="text">{{ baseInfo.address }}</view>
       </view>
     </view>
     <navigator v-if="isLogin" url="/pages/mine/edit">
@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       userInfo: {},
-      addr: '江苏省南京市建邺区团结路200号10楼721室江苏省南京市建邺区团结路200号10楼721室'
+      baseInfo: {}
     };
   },
   onShow() {
@@ -63,14 +63,17 @@ export default {
     getUserInfo() {
       if (this.isLogin) {
         _POST('/address/query', {
-          userld: this.isLogin
+          userId: this.isLogin
         }).then((res) => {
-          console.log(res);
+          if (res && res.code && res.code === 'Y' && res.data) {
+            this.baseInfo = res.data;
+          }
         });
       }
     },
     exitFun() {
       this.userInfo = {};
+      this.baseInfo = {};
       this.exit();
       uni.clearStorage();
     },
