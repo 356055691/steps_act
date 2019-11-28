@@ -1,6 +1,6 @@
 function _POST(url, params) {
   return new Promise((resolve, reject) => {
-    wx.request({
+    uni.request({
       url: `https://daokeleague.mynatapp.cc/jibu-web${url}`,
       method: 'POST',
       data: params,

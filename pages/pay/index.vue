@@ -74,20 +74,40 @@ export default {
   },
   methods: {
     payFun() {
+      uni.showLoading({
+        title: '唤起支付中'
+      });
       _POST('/payment/pay', {
         userId: this.isLogin
       }).then((res) => {
-        console.log(res);
+        uni.hideLoading();
+        if (res && res.code && res.code === 'Y') {
+          if (res.data) {
+            const data = res.data;
+            uni.requestPayment({
+              provider: 'wxpay',
+              timeStamp: String(data.timeStamp),
+              nonceStr: data.nonceStr,
+              package: data.package,
+              signType: data.signType,
+              paySign: data.paySign,
+              success: (res) => {
+                uni.showToast({
+                  title: '支付成功',
+                  duration: 2000
+                });
+              },
+              fail: (err) => {
+                uni.showToast({
+                  title: '支付失败',
+                  icon: 'none',
+                  duration: 2000
+                });
+              }
+            });
+          }
+        }
       });
-      // uni.showLoading({
-      //   title: '支付中'
-      // });
-      // setTimeout(() => {
-      //   uni.hideLoading();
-      //   uni.navigateTo({
-      //     url: '/pages/act/index'
-      //   });
-      // }, 2000);
     }
   }
 };

@@ -118,7 +118,7 @@ export default {
       });
     },
     steopFun() {
-      wx.getWeRunData({
+      uni.getWeRunData({
         success: (data) => {
           _POST('/record/steps', {
             encryptedData: data.encryptedData,
