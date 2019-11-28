@@ -30,12 +30,26 @@
           报名费：
         </view>
         <view class="text">
-          {{ price }}
+          {{ price }} 元
+        </view>
+      </view>
+      <view class="des">
+        <view class="title">
+          活动说明：
+        </view>
+        <view class="text" v-if="status === '0'">
+          活动即将开始，火热报名中！
+        </view>
+        <view class="text" v-if="status === '1'">
+          活动已经开始，报名通道已经关闭！
+        </view>
+        <view class="text" v-if="status === '2'">
+          活动已经结束，快去看看你获奖了没！
         </view>
       </view>
     </view>
-    <view v-if="status === '0'" class="pay-btn disabled">未开始</view>
-    <view v-if="status === '1'" class="pay-btn" @tap="payFun">微信支付</view>
+    <view v-if="status === '0'" class="pay-btn" @tap="payFun">我要报名</view>
+    <view v-if="status === '1'" class="pay-btn disabled">报名已截止</view>
     <navigator v-if="isLogin" url="/pages/act/list">
       <view v-if="status === '2'" class="pay-btn">查看获奖名单</view>
     </navigator>
@@ -124,8 +138,9 @@ export default {
   }
   .des {
     clear: both;
-    height: 80upx;
-    line-height: 80upx;
+    min-height: 80upx;
+    padding: 15upx 0;
+    line-height: 50upx;
     .title {
       color: #999;
       font-size: 30upx;

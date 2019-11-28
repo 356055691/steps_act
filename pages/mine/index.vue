@@ -4,7 +4,8 @@
       <view class="pic">
         <image v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl"></image>
       </view>
-      <view class="name">{{ userInfo.nickName || '--'}}</view>
+      <view v-if="isLogin" class="name">{{ userInfo.nickName || '--'}}</view>
+      <view v-else class="name" @tap="goLogin">去登录</view>
       <view v-if="isLogin" class="exit" @tap="exitFun">注销</view>
     </view>
     <view class="info-list">
@@ -30,6 +31,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import { _POST } from '../../libs/http';
 
 export default {
   data() {
@@ -45,6 +47,7 @@ export default {
         this.userInfo = res.data;
       }
     });
+    this.getUserInfo();
   },
   computed: {
     ...mapState({
@@ -57,10 +60,24 @@ export default {
       setUser: 'setUser',
       exit: 'exit'
     }),
+    getUserInfo() {
+      if (this.isLogin) {
+        _POST('/address/query', {
+          userld: this.isLogin
+        }).then((res) => {
+          console.log(res);
+        });
+      }
+    },
     exitFun() {
       this.userInfo = {};
       this.exit();
       uni.clearStorage();
+    },
+    goLogin() {
+      uni.switchTab({
+        url: '/pages/act/index'
+      });
     }
   }
 };
