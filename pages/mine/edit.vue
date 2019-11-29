@@ -59,8 +59,8 @@ export default {
         address: this.address,
         userId: this.isLogin
       }).then((res) => {
+        uni.hideLoading();
         if (res && res.code && res.code === 'Y') {
-          uni.hideLoading();
           uni.showToast({
             title: '保存成功',
             duration: 2000

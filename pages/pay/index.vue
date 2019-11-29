@@ -81,7 +81,7 @@ export default {
       this.name = option.name;
       this.id = option.id;
       this.num = option.num;
-      this.price = option.price;
+      this.price = option.price ? Number(option.price / 100).toFixed(2) : '0.00';
       this.status = option.status;
       this.steps = option.steps;
     }
@@ -92,7 +92,8 @@ export default {
         title: '唤起支付中'
       });
       _POST('/payment/pay', {
-        userId: this.isLogin
+        userId: this.isLogin,
+        activityId: this.id
       }).then((res) => {
         uni.hideLoading();
         if (res && res.code && res.code === 'Y') {
@@ -113,7 +114,7 @@ export default {
               },
               fail: (err) => {
                 uni.showToast({
-                  title: '支付失败',
+                  title: '支付异常',
                   icon: 'none',
                   duration: 2000
                 });
