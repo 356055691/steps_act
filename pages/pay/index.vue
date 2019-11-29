@@ -123,7 +123,7 @@ export default {
           }
         } else {
           uni.showToast({
-            title: '接口异常，请稍后再试~~',
+            title: res.msg,
             icon: 'none',
             duration: 2000
           });
