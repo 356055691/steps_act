@@ -54,6 +54,12 @@ export default {
       _POST('/activity/list', {}).then((res) => {
         if (res && res.code && res.code === 'S') {
           this.adList = res.data;
+        } else {
+          uni.showToast({
+            title: '接口异常，请稍后再试~~',
+            icon: 'none',
+            duration: 2000
+          });
         }
       });
     },
@@ -93,7 +99,11 @@ export default {
               }
             });
           } else {
-            console.log('登录失败！' + res.errMsg)
+            uni.showToast({
+              title: '登录失败！',
+              icon: 'none',
+              duration: 2000
+            });
           }
         }
       });
@@ -130,6 +140,12 @@ export default {
                 this.steps = res.data.steps;
                 this.noStep = false;
               }
+            } else {
+              uni.showToast({
+                title: '接口异常，请稍后再试~~',
+                icon: 'none',
+                duration: 2000
+              });
             }
           });
         },

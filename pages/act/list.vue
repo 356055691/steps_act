@@ -6,7 +6,7 @@
       <view class="list-item" v-for="(item, index) in list" :key="index">
         <view class="num">{{ index + 1 }}</view>
         <view class="name">{{ item.contact_name }}</view>
-        <view class="tel">{{ item.area }}</view>
+        <view class="tel">{{ item.contact_tel }}</view>
       </view>
     </view>
   </view>
@@ -18,17 +18,32 @@ import { _GET } from '../../libs/http';
 export default {
   data() {
     return {
+      id: 0,
       list: []
     };
   },
-  onLoad() {
-    this.getList();
+  onLoad(option) {
+    if (option) {
+      this.id = option.id;
+      this.getList();
+    }
   },
   methods: {
     getList() {
-      _GET('/address/list', {}).then((res) => {
+      _GET('/address/list', {
+        activityId: this.id
+      }).then((res) => {
         if (res && res.code && res.code === 'Y') {
           this.list = res.data;
+          this.list.forEach((val) => {
+            val.contact_tel = val.contact_tel.substr(0, 3) + '****' + val.contact_tel.substr(7);  
+          });
+        } else {
+          uni.showToast({
+            title: '接口异常，请稍后再试~~',
+            icon: 'none',
+            duration: 2000
+          });
         }
       });
     }

@@ -67,6 +67,12 @@ export default {
         }).then((res) => {
           if (res && res.code && res.code === 'Y' && res.data) {
             this.baseInfo = res.data;
+          } else {
+            uni.showToast({
+              title: '接口异常，请稍后再试~~',
+              icon: 'none',
+              duration: 2000
+            });
           }
         });
       }

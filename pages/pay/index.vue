@@ -50,7 +50,7 @@
     </view>
     <view v-if="status === '0'" class="pay-btn" @tap="payFun">我要报名</view>
     <view v-if="status === '1'" class="pay-btn disabled">报名已截止</view>
-    <navigator v-if="isLogin" url="/pages/act/list">
+    <navigator v-if="isLogin" :url="`/pages/act/list?id=${id}`">
       <view v-if="status === '2'" class="pay-btn">查看获奖名单</view>
     </navigator>
   </view>
@@ -121,6 +121,12 @@ export default {
               }
             });
           }
+        } else {
+          uni.showToast({
+            title: '接口异常，请稍后再试~~',
+            icon: 'none',
+            duration: 2000
+          });
         }
       });
     }

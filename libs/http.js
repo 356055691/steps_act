@@ -11,11 +11,6 @@ function _POST(url, params) {
         resolve(res.data);
       },
       fail(error) {
-        uni.showToast({
-          title: '接口异常，请稍后再试~~',
-          icon: 'none',
-          duration: 2000
-        });
         reject(error);
       }
     });
@@ -35,11 +30,6 @@ function _GET(url, params) {
         resolve(res.data);
       },
       fail(error) {
-        uni.showToast({
-          title: '接口异常，请稍后再试~~',
-          icon: 'none',
-          duration: 2000
-        });
         reject(error);
       }
     });
