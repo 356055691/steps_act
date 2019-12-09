@@ -56,7 +56,7 @@ export default {
           this.adList = res.data;
         } else {
           uni.showToast({
-            title: '接口异常，请稍后再试~~',
+            title: res.msg || '接口异常，请稍后再试~~',
             icon: 'none',
             duration: 2000
           });
@@ -142,7 +142,7 @@ export default {
               }
             } else {
               uni.showToast({
-                title: '接口异常，请稍后再试~~',
+                title: res.msg || '接口异常，请稍后再试~~',
                 icon: 'none',
                 duration: 2000
               });

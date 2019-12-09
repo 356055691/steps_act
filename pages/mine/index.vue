@@ -65,11 +65,13 @@ export default {
         _POST('/address/query', {
           userId: this.isLogin
         }).then((res) => {
-          if (res && res.code && res.code === 'Y' && res.data) {
-            this.baseInfo = res.data;
+          if (res && res.code && res.code === 'Y') {
+            if (res.data) {
+              this.baseInfo = res.data;
+            }
           } else {
             uni.showToast({
-              title: '接口异常，请稍后再试~~',
+              title: res.msg || '接口异常，请稍后再试~~',
               icon: 'none',
               duration: 2000
             });

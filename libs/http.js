@@ -1,7 +1,8 @@
+const baseUrl = 'https://www.tencentschool.com/jibu-web';
 function _POST(url, params) {
   return new Promise((resolve, reject) => {
     uni.request({
-      url: `https://daokeleague.mynatapp.cc/jibu-web${url}`,
+      url: `${baseUrl}${url}`,
       method: 'POST',
       data: params,
       header: {
@@ -20,7 +21,7 @@ function _POST(url, params) {
 function _GET(url, params) {
   return new Promise((resolve, reject) => {
     uni.request({
-      url: `https://daokeleague.mynatapp.cc/jibu-web${url}`,
+      url: `${baseUrl}${url}`,
       method: 'GET',
       data: params,
       header: {

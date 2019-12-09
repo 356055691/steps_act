@@ -24,7 +24,31 @@ export default {
       isLogin: state => state.isLogin
     })
   },
+  onShow() {
+    this.getUserInfo();
+  },
   methods: {
+    getUserInfo() {
+      if (this.isLogin) {
+        _POST('/address/query', {
+          userId: this.isLogin
+        }).then((res) => {
+          if (res && res.code && res.code === 'Y') {
+            if (res.data) {
+              this.contactName = res.data.contact_name;
+              this.contactTel = res.data.contact_tel;
+              this.address = res.data.address;
+            }
+          } else {
+            uni.showToast({
+              title: res.msg || '接口异常，请稍后再试~~',
+              icon: 'none',
+              duration: 2000
+            });
+          }
+        });
+      }
+    },
     editFun() {
       if (!this.isLogin) {
         uni.showToast({
@@ -72,7 +96,7 @@ export default {
           }, 2000);
         } else {
           uni.showToast({
-            title: '保存失败',
+            title: res.msg || '保存失败',
             icon: 'none',
             duration: 2000
           });
