@@ -2,12 +2,15 @@
   <view class="page-act-list">
     <view class="title">获奖名单</view>
     <view class="tips">注：请获奖者保持电话畅通，店家将尽快与您取得联系哦</view>
-    <view class="list-c">
+    <view v-if="list && list.length > 0" class="list-c">
       <view class="list-item" v-for="(item, index) in list" :key="index">
         <view class="num">{{ index + 1 }}</view>
         <view class="name">{{ item.contact_name }}</view>
         <view class="tel">{{ item.contact_tel }}</view>
       </view>
+    </view>
+    <view class="no-list" v-else>
+      获奖名单即将公布，请稍后再来查看哦~~
     </view>
   </view>
 </template>
@@ -57,6 +60,11 @@ export default {
   height: 100%;
   background-color: #f5f5f5;
   color: #444;
+  .no-list {
+    text-align: center;
+    font-size: 28upx;
+    line-height: 100upx;
+  }
   .title {
     line-height: 100upx;
     font-weight: bold;

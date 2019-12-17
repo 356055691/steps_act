@@ -108,7 +108,7 @@ export default {
               paySign: data.paySign,
               success: (res) => {
                 uni.showToast({
-                  title: '支付成功',
+                  title: '报名成功',
                   duration: 2000
                 });
               },

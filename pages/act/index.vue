@@ -3,7 +3,12 @@
     <swiper class="swiper" :circular="true" :indicator-dots="true">
       <swiper-item v-for="(item, index) in adList" :key="index" @tap="joinFun(item)">
         <view class="swiper-item">
-          <image :src="item.pic"></image>
+          <image v-if="item.pic" :src="item.pic"></image>
+          <view class="no-pic" v-else>
+            <view class="tip-1">404</view>
+            <view class="tip-2">~活动图片找不到了~</view>
+          </view>
+          <view class="join-btn">报名参加</view>
           <view class="intro">{{ item.activity_name }}</view>
         </view>
       </swiper-item>
@@ -54,6 +59,7 @@ export default {
       _POST('/activity/list', {}).then((res) => {
         if (res && res.code && res.code === 'S') {
           this.adList = res.data;
+          this.adList = res.data.sort(this.compare('status'));
         } else {
           uni.showToast({
             title: res.msg || '接口异常，请稍后再试~~',
@@ -62,6 +68,13 @@ export default {
           });
         }
       });
+    },
+    compare(property) {
+      return (a,b) => {
+        var value1 = a[property];
+        var value2 = b[property];
+        return value1 - value2;
+      }
     },
     getUserInfo(res) {
       if (res && res.detail && res.detail.errMsg === 'getUserInfo:ok') {
@@ -188,6 +201,45 @@ export default {
       width: 100%;
       height: 100%;
       position: relative;
+      .join-btn {
+        width: 140upx;
+        height: 60upx;
+        line-height: 60upx;
+        text-align: center;
+        color: #fff;
+        background-color: #a5cd34;
+        font-size: 24upx;
+        border-radius: 4upx;
+        position: absolute;
+        left: 50%;
+        margin-left: -70upx;
+        bottom: 80upx;
+      }
+      .no-pic {
+        width: 750upx;
+        height: 480upx;
+        background-color: #f5f5f5;
+        .tip-1 {
+          margin-top: 80upx;
+          display: inline-block;
+          width: 100%;
+          height: 150upx;
+          line-height: 150upx;
+          font-size: 100upx;
+          text-align: center;
+          color: #333;
+        }
+        .tip-2 {
+          display: inline-block;
+          width: 100%;
+          height: 60upx;
+          line-height: 60upx;
+          font-size: 30upx;
+          margin-bottom: 190upx;
+          text-align: center;
+          color: #999;
+        }
+      }
       image {
         width: 100%;
         height: 100%;
