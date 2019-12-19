@@ -76,7 +76,7 @@ export default {
       isLogin: state => state.isLogin
     })
   },
-  onShow(option) {
+  onLoad(option) {
     if (option) {
       this.name = option.name;
       this.id = option.id;
