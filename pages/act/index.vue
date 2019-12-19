@@ -8,7 +8,7 @@
             <view class="tip-1">404</view>
             <view class="tip-2">~活动图片找不到了~</view>
           </view>
-          <view class="join-btn">报名参加</view>
+          <view class="join-btn">查看详情</view>
           <view class="intro">{{ item.activity_name }}</view>
         </view>
       </swiper-item>
@@ -42,10 +42,8 @@ export default {
       isLogin: state => state.isLogin
     })
   },
-  onLoad() {
-    this.getAds();
-  },
   onShow() {
+    this.getAds();
     if (this.isLogin) {
       this.getSteops();
     }
