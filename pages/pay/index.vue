@@ -29,8 +29,11 @@
         <view class="title">
           报名费：
         </view>
-        <view class="text">
+        <view v-if="price" class="text">
           {{ price }} 元
+        </view>
+        <view v-else class="text free">
+          免费
         </view>
       </view>
       <view class="des">
@@ -81,7 +84,7 @@ export default {
       this.name = option.name;
       this.id = option.id;
       this.num = option.num;
-      this.price = option.price ? Number(option.price / 100).toFixed(2) : '0.00';
+      this.price = option.price ? Number(option.price / 100).toFixed(2) : 0;
       this.status = option.status;
       this.steps = option.steps;
     }
@@ -161,6 +164,9 @@ export default {
       font-size: 34upx;
       width: 520upx;
       float: left;
+    }
+    .free {
+      color: red;
     }
   }
   .pay-btn {
