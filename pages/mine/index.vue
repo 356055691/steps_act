@@ -158,7 +158,7 @@ export default {
       padding-bottom: 20upx;
       color: #444;
       font-size: 32upx;
-      height: 50upx;
+      min-height: 50upx;
     }
   }
   .edit-btn {
