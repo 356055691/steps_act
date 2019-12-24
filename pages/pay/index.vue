@@ -3,7 +3,7 @@
     <!-- <image v-if="pic" class="pic" :src="pic"></image> -->
     <view class="base-info">
       <view class="name eps-1">{{ name }}</view>
-      <view class="num">仅剩：{{ num }} 位</view>
+      <view class="num">报名人数：{{ num }}</view>
     </view>
     <view class="step-c">
       所需步数<text class="step">{{ steps }}步</text>
@@ -36,6 +36,7 @@
         <view class="title">
           活动详情：
         </view>
+        <view class="big-name">{{ name }}</view>
         <view class="text">
           {{ remark }}
         </view>
@@ -163,6 +164,12 @@ export default {
   width: 100%;
   height: 100%;
   background-color: #fff;
+  .big-name {
+    text-align: center;
+    line-height: 80upx;
+    margin-bottom: 20upx;
+    font-size: 38upx;
+  }
   .pic {
     width: 750upx;
     height: 480upx;
@@ -180,7 +187,7 @@ export default {
     border-top: solid 20upx #f5f5f5;
     margin-bottom: 10upx;
     .name {
-      width: 500upx;
+      width: 450upx;
       height: 80upx;
       line-height: 80upx;
       font-size: 36upx;
@@ -188,7 +195,7 @@ export default {
       float: left;
     }
     .num {
-      width: 190upx;
+      width: 240upx;
       height: 80upx;
       line-height: 80upx;
       float: right;

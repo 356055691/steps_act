@@ -25,7 +25,7 @@ export default {
       list: []
     };
   },
-  onShow(option) {
+  onLoad(option) {
     if (option) {
       this.id = option.id;
       this.getList();
