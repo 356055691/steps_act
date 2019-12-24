@@ -13,6 +13,12 @@
 			}
     },
     {
+			"path": "pages/act/actList",
+			"style": {
+				"navigationBarTitleText": "我参加的活动"
+			}
+    },
+    {
 			"path": "pages/pay/index",
 			"style": {
 				"navigationBarTitleText": "活动报名"
@@ -38,6 +44,12 @@
 		"list": [
       {
         "pagePath": "pages/act/index",
+        "text": "首页",
+        "iconPath": "static/index-grey-icon.png",
+			  "selectedIconPath": "static/index-icon.png"
+      },
+      {
+        "pagePath": "pages/act/actList",
         "text": "活动中心",
         "iconPath": "static/act-grey-icon.png",
 			  "selectedIconPath": "static/act-icon.png"
