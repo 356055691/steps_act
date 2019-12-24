@@ -34,7 +34,7 @@
       </view>
       <view class="des">
         <view class="title">
-          活动规则：
+          活动详情：
         </view>
         <view class="text">
           {{ remark }}
@@ -175,9 +175,9 @@ export default {
   }
   .base-info {
     width: 750upx;
-    height: 82upx;
+    height: 100upx;
     padding: 0 30upx;
-    border-top: solid 1upx #f5f5f5;
+    border-top: solid 20upx #f5f5f5;
     margin-bottom: 10upx;
     .name {
       width: 500upx;
@@ -199,12 +199,12 @@ export default {
   }
   .price-c {
     width: 750upx;
-    height: 60upx;
+    height: 80upx;
     line-height: 40upx;
     padding: 0 30upx;
     font-size: 26upx;
     color: #666;
-    border-bottom: solid 1upx #f5f5f5;
+    border-bottom: solid 20upx #f5f5f5;
     padding-bottom: 20upx;
     .price {
       padding-left: 5upx;
