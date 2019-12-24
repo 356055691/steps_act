@@ -121,13 +121,14 @@ export default {
   width: 100%;
   background-color: #f5f5f5;
   .list {
-    padding-bottom: 30upx;
+    padding-bottom: 10upx;
+    padding-top: 20upx;
     .item {
       width: 690upx;
       background-color: #fff;
       padding: 30upx;
       border-radius: 10upx;
-      margin: 20upx auto 0;
+      margin: 0 auto 20px;
       .top {
         height: 80upx;
         line-height: 80upx;
