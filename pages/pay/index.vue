@@ -1,6 +1,6 @@
 <template>
   <view class="page-pay">
-    <image v-if="pic" class="pic" :src="pic"></image>
+    <!-- <image v-if="pic" class="pic" :src="pic"></image> -->
     <view class="base-info">
       <view class="name eps-1">{{ name }}</view>
       <view class="num">仅剩：{{ num }} 位</view>
@@ -41,6 +41,7 @@
         </view>
       </view>
     </view>
+    <image v-if="pic" class="ad-pic" :src="pic" mode="widthFix"></image>
     <view class="btn-c">
       <view v-if="status === 0" class="pay-btn" @tap="payFun">
         <view class="tip-1">{{ steps }}步</view>
@@ -165,6 +166,11 @@ export default {
   .pic {
     width: 750upx;
     height: 480upx;
+    vertical-align: top;
+  }
+  .ad-pic {
+    width: 100%;
+    height: 100%;
     vertical-align: top;
   }
   .base-info {
