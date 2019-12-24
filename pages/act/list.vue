@@ -1,6 +1,6 @@
 <template>
   <view class="page-act-list">
-    <view class="title">获奖名单</view>
+    <!-- <view class="title">获奖名单</view> -->
     <view class="tips">注：请获奖者保持电话畅通，店家将尽快与您取得联系哦</view>
     <view v-if="list && list.length > 0" class="list-c">
       <view class="list-item" v-for="(item, index) in list" :key="index">
