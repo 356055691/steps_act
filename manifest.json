@@ -50,6 +50,11 @@
             "ios" : {},
             /* SDK配置 */
             "sdkConfigs" : {}
+        },
+        "safearea": {  
+            "bottom": {  
+                "offset": "none"  
+            }  
         }
     },
     /* 快应用特有相关 */

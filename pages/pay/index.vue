@@ -1,61 +1,56 @@
 <template>
   <view class="page-pay">
+    <image v-if="pic" class="pic" :src="pic"></image>
+    <view class="base-info">
+      <view class="name eps-1">{{ name }}</view>
+      <view class="num">仅剩：{{ num }} 位</view>
+    </view>
+    <view class="step-c">
+      所需步数<text class="step">{{ steps }}步</text>
+    </view>
+    <view class="price-c">
+      报名价格
+      <text v-if="price" class="price">
+        {{ price }}元
+      </text>
+      <text v-else class="price">
+        免费
+      </text>
+    </view>
     <view class="des-c">
       <view class="des">
         <view class="title">
-          活动名称：
+          活动状态：
         </view>
-        <view class="text">
-          {{ name }}
-        </view>
-      </view>
-      <view class="des">
-        <view class="title">
-          剩余名额：
-        </view>
-        <view class="text">
-          {{ num }}
-        </view>
-      </view>
-      <view class="des">
-        <view class="title">
-          所需步数：
-        </view>
-        <view class="text">
-          {{ steps }}
-        </view>
-      </view>
-      <view class="des">
-        <view class="title">
-          报名费：
-        </view>
-        <view v-if="price" class="text">
-          {{ price }} 元
-        </view>
-        <view v-else class="text free">
-          免费
-        </view>
-      </view>
-      <view class="des">
-        <view class="title">
-          活动说明：
-        </view>
-        <view class="text" v-if="status === '0'">
+        <view class="text" v-if="status === 0">
           活动即将开始，火热报名中！
         </view>
-        <view class="text" v-if="status === '1'">
-          活动已经开始，报名通道已经关闭！
+        <view class="text" v-if="status === 1">
+          活动已经开始，报名结束！
         </view>
-        <view class="text" v-if="status === '2'">
+        <view class="text" v-if="status === 2">
           活动已经结束，快去看看你获奖了没！
         </view>
       </view>
+      <view class="des">
+        <view class="title">
+          活动规则：
+        </view>
+        <view class="text">
+          {{ remark }}
+        </view>
+      </view>
     </view>
-    <view v-if="status === '0'" class="pay-btn" @tap="payFun">我要报名</view>
-    <view v-if="status === '1'" class="pay-btn disabled">报名已截止</view>
-    <navigator v-if="isLogin" :url="`/pages/act/list?id=${id}`">
-      <view v-if="status === '2'" class="pay-btn">查看获奖名单</view>
-    </navigator>
+    <view class="btn-c">
+      <view v-if="status === 0" class="pay-btn" @tap="payFun">
+        <view class="tip-1">{{ steps }}步</view>
+        <view class="tip-2">立即报名</view>
+      </view>
+      <view v-if="status === 1" class="pay-btn disabled">报名已截止</view>
+      <navigator v-if="isLogin" :url="`/pages/act/list?id=${id}`">
+        <view v-if="status === 2" class="pay-btn">查看获奖名单</view>
+      </navigator>
+    </view>
   </view>
 </template>
 
@@ -70,8 +65,10 @@ export default {
       id: 0,
       num: 0,
       price: 0,
-      status: '0',
-      steps: 0
+      status: 0,
+      steps: 0,
+      remark: '',
+      pic: ''
     };
   },
   computed: {
@@ -81,15 +78,38 @@ export default {
   },
   onLoad(option) {
     if (option) {
-      this.name = option.name;
       this.id = option.id;
-      this.num = option.num;
-      this.price = option.price ? Number(option.price / 100).toFixed(2) : 0;
-      this.status = option.status;
-      this.steps = option.steps;
     }
   },
+  onShow() {
+    this.getDetail();
+  },
   methods: {
+    getDetail() {
+      _POST('/activity/listDetail', {
+        activityId: this.id
+      }).then((res) => {
+        if (res && res.code && res.code === 'S')  {
+          if (res.data && res.data.length > 0) {
+            const data = res.data[0];
+            this.name = data.activity_name;
+            this.num = data.limit_num;
+            this.pic = data.pic;
+            this.price = data.price ? Number(data.price / 100).toFixed(2) : 0;
+            this.remark = data.remark;
+            this.status = data.status;
+            this.steps = data.steps;
+            this.type = data.type;
+          }
+        } else {
+          uni.showToast({
+            title: res.msg || '接口异常，请稍后再试~~',
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      });
+    },
     payFun() {
       uni.showLoading({
         title: '唤起支付中'
@@ -141,48 +161,115 @@ export default {
 .page-pay {
   width: 100%;
   height: 100%;
-  background-color: #f5f5f5;
+  background-color: #fff;
+  .pic {
+    width: 750upx;
+    height: 480upx;
+    vertical-align: top;
+  }
+  .base-info {
+    width: 750upx;
+    height: 82upx;
+    padding: 0 30upx;
+    border-top: solid 1upx #f5f5f5;
+    margin-bottom: 10upx;
+    .name {
+      width: 500upx;
+      height: 80upx;
+      line-height: 80upx;
+      font-size: 36upx;
+      color: #444;
+      float: left;
+    }
+    .num {
+      width: 190upx;
+      height: 80upx;
+      line-height: 80upx;
+      float: right;
+      color: red;
+      font-size: 28upx;
+      text-align: right;
+    }
+  }
+  .price-c {
+    width: 750upx;
+    height: 60upx;
+    line-height: 40upx;
+    padding: 0 30upx;
+    font-size: 26upx;
+    color: #666;
+    border-bottom: solid 1upx #f5f5f5;
+    padding-bottom: 20upx;
+    .price {
+      padding-left: 5upx;
+      color: red;
+    }
+  }
+  .step-c {
+    width: 750upx;
+    height: 40upx;
+    line-height: 40upx;
+    font-size: 26upx;
+    color: #666;
+    padding: 0 30upx;
+    .step {
+      padding-left: 5upx;
+      color: #24c5c0;
+    }
+  }
   .des-c {
-    padding: 40upx;
+    padding: 30upx;
     background-color: #fff;
   }
   .des {
-    clear: both;
     min-height: 80upx;
     padding: 15upx 0;
-    line-height: 50upx;
     .title {
       color: #999;
       font-size: 30upx;
-      width: 150upx;
-      text-align: right;
-      float: left;
     }
     .text {
-      padding-left: 20upx;
       color: #444;
       font-size: 34upx;
-      width: 520upx;
-      float: left;
     }
     .free {
       color: red;
     }
   }
+  .btn-c {
+    width: 750upx;
+    height: 110upx;
+    margin-bottom: 0;
+    margin-bottom: constant(safe-area-inset-bottom);  
+    margin-bottom: env(safe-area-inset-bottom);
+  }
   .pay-btn {
-    width: 690upx;
-    height: 90upx;
-    border-radius: 45upx;
+    width: 750upx;
+    height: 110upx;
     background-color: #a5cd34;
-    box-shadow: 0 10upx 10upx #aaa;
+    padding: 15upx 0;
     color: #fff;
     font-size: 32upx;
-    line-height: 90upx;
+    line-height: 80upx;
     text-align: center;
-    position: absolute;
-    bottom: 90upx;
-    left: 30upx;
-    right: 30upx;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    bottom: constant(safe-area-inset-bottom);  
+    bottom: env(safe-area-inset-bottom);
+    .tip-1 {
+      width: 750upx;
+      height: 50upx;
+      line-height: 50upx;
+      font-size: 34upx;
+    }
+    .tip-2 {
+      width: 750upx;
+      height: 30upx;
+      line-height: 30upx;
+      font-size: 24upx;
+    }
   }
   .disabled {
     background-color: #ccc;

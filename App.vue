@@ -48,4 +48,9 @@ page {
 view {
   box-sizing: border-box;
 }
+.eps-1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 </style>
