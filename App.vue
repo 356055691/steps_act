@@ -60,7 +60,7 @@ export default {
             uni.showToast({
               title: '自动登录失败，请手动退出再登录',
               icon: 'none',
-              duration: 2000
+              duration: 4000
             });
           }
         }
