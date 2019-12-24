@@ -45,7 +45,9 @@ export default {
   onShow() {
     this.getAds();
     if (this.isLogin) {
-      this.getSteops();
+      this.getSteps();
+    } else {
+      this.steps = '';
     }
   },
   methods: {
@@ -103,7 +105,7 @@ export default {
                   data: res.userId,
                   success: () => {
                     this.setLogin(res.userId);
-                    this.getSteops();
+                    this.getSteps();
                     uni.hideLoading();
                   }
                 });
@@ -119,7 +121,7 @@ export default {
         }
       });
     },
-    getSteops() {
+    getSteps() {
       uni.getSetting({
         success: (res) => {
           if (JSON.stringify(res.authSetting) === '{}' || res.authSetting['scope.werun'] === undefined) {
