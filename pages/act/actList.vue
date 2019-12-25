@@ -35,7 +35,11 @@ export default {
     };
   },
   onShow() {
-    this.getList();
+    if (this.isLogin) {
+      this.getList();
+    } else {
+      this.list = [];
+    }
   },
   computed: {
     ...mapState({
