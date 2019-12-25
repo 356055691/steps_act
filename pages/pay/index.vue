@@ -97,7 +97,7 @@ export default {
             this.name = data.activity_name;
             this.num = data.limit_num;
             this.pic = data.pic;
-            this.price = data.price ? Number(data.price / 100).toFixed(2) : 0;
+            this.price = data.price ? Number(data.price).toFixed(2) : 0;
             this.remark = data.remark;
             this.status = data.status;
             this.steps = data.steps;
