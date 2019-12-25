@@ -10,7 +10,7 @@
             <view v-if="item.status === 2" class="status status-2">已结束</view>
           </view>
           <view class="middle">
-            <view class="text">活动时间：{{ item.start_time }}至{{ item.end_time }}</view>
+            <view class="text">活动时间：{{ item.start_time }} 至 {{ item.end_time }}</view>
             <view class="text">所需步数：{{ item.steps }}步</view>
             <view class="text">报名费用：{{ item.price }}元</view>
           </view>
