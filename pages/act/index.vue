@@ -172,7 +172,7 @@ export default {
     },
     joinFun(data) {
       if (this.isLogin) {
-        let params = `name=${data.activity_name}&id=${data.id}&num=${data.limit_num}&price=${data.price}&steps=${data.steps}&status=${data.status}`;
+        let params = `&id=${data.id}`;
         uni.navigateTo({
           url: `/pages/pay/index?${params}`
         });

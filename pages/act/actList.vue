@@ -1,16 +1,20 @@
 <template>
   <view class="page-act-list">
     <view class="list" v-if="list && list.length > 0">
-      <view class="item">
-        <view class="top">
-          <view class="name eps-1">活动名称活动名称活动名称活动名称活动名称</view>
-          <view class="status status-0">未开始</view>
-        </view>
-        <view class="middle">
-          <view class="text">活动时间：2019.09.01-2020.01.01</view>
-          <view class="text">所需步数：200步</view>
-          <view class="text">报名费用：100元</view>
-        </view>
+      <view class="item" v-for="(item, index) in list" :key="index">
+        <navigator :url="`/pages/pay/index?id=${item.id}`">
+          <view class="top">
+            <view class="name eps-1">{{ item.activity_name }}</view>
+            <view v-if="item.status === 0" class="status status-0">未开始</view>
+            <view v-if="item.status === 1" class="status status-1">进行中</view>
+            <view v-if="item.status === 2" class="status status-2">已结束</view>
+          </view>
+          <view class="middle">
+            <view class="text">活动时间：{{ item.start_time }}-{{ item.end_time }}</view>
+            <view class="text">所需步数：{{ item.steps }}步</view>
+            <view class="text">报名费用：{{ item.price }}元</view>
+          </view>
+        </navigator>
       </view>
     </view>
     <view v-else class="no-data">
@@ -41,12 +45,12 @@ export default {
   methods: {
     getList() {
       if (this.isLogin) {
-        _POST('/listActivityDetail', {
+        _POST('/activity/listActivity', {
           userId: this.isLogin
         }).then((res) => {
-          if (res && res.code && res.code === 'Y') {
-            if (res) {
-              console.log(11, res);
+          if (res && res.code && res.code === 'S') {
+            if (res && res.data && res.data.length > 0) {
+              this.list = res.data;
             }
           } else {
             uni.showToast({

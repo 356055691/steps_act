@@ -3,7 +3,7 @@
     {
 			"path": "pages/act/index",
 			"style": {
-				"navigationBarTitleText": "活动中心"
+				"navigationBarTitleText": "首页"
 			}
     },
     {
