@@ -1,8 +1,8 @@
 <template>
   <view class="page-act-list">
     <view class="list" v-if="list && list.length > 0">
-      <view class="item" v-for="(item, index) in list" :key="index">
-        <navigator :url="`/pages/pay/index?id=${item.id}`">
+      <navigator v-for="(item, index) in list" :key="index" :url="`/pages/pay/index?id=${item.activity_id}`">
+        <view class="item">
           <view class="top">
             <view class="name eps-1">{{ item.activity_name }}</view>
             <view v-if="item.status === 0" class="status status-0">未开始</view>
@@ -14,8 +14,8 @@
             <view class="text">所需步数：{{ item.steps }}步</view>
             <view class="text">报名费用：{{ item.price }}元</view>
           </view>
-        </navigator>
-      </view>
+        </view>
+      </navigator>
     </view>
     <view v-else class="no-data">
       <view v-if="isLogin">您还没有参加任何活动哦~</view>

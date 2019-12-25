@@ -3,13 +3,16 @@
     <!-- <image v-if="pic" class="pic" :src="pic"></image> -->
     <view class="base-info">
       <view class="name eps-1">{{ name }}</view>
-      <view class="num">报名人数：{{ num }}</view>
+      <view class="num">报名人数：{{ total }}</view>
+    </view>
+    <view class="date-c">
+      活动时间：{{ start_time }} 至 {{ end_time }}
     </view>
     <view class="step-c">
-      所需步数<text class="step">{{ steps }}步</text>
+      所需步数：<text class="step">{{ steps }}步</text>
     </view>
     <view class="price-c">
-      报名价格
+      报名价格：
       <text v-if="price" class="price">
         {{ price }}元
       </text>
@@ -70,7 +73,10 @@ export default {
       status: 0,
       steps: 0,
       remark: '',
-      pic: ''
+      pic: '',
+      total: 0,
+      start_time: '',
+      end_time: ''
     };
   },
   computed: {
@@ -102,6 +108,9 @@ export default {
             this.status = data.status;
             this.steps = data.steps;
             this.type = data.type;
+            this.total = data.total_report;
+            this.start_time = data.start_time;
+            this.end_time = data.end_time;
           }
         } else {
           uni.showToast({
@@ -203,6 +212,14 @@ export default {
       font-size: 28upx;
       text-align: right;
     }
+  }
+  .date-c {
+    width: 750upx;
+    height: 40upx;
+    line-height: 40upx;
+    padding: 0 30upx;
+    font-size: 26upx;
+    color: #666;
   }
   .price-c {
     width: 750upx;
