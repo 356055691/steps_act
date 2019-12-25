@@ -44,11 +44,13 @@ export default {
   },
   onShow() {
     this.getAds();
-    if (this.isLogin) {
-      this.getSteps();
-    } else {
-      this.steps = '';
-    }
+    setTimeout(() => {
+      if (this.isLogin) {
+        this.getSteps();
+      } else {
+        this.steps = '';
+      }
+    }, 1000);
   },
   methods: {
     ...mapMutations({

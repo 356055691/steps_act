@@ -11,7 +11,7 @@ export default {
       key: 'USER_ID',
       success: (res) => {
         this.autoLogin();
-        this.setLogin(res.data);
+        // this.setLogin(res.data);
       },
       fail: (error) => {
         uni.clearStorage();
