@@ -43,7 +43,7 @@ export default {
             uni.showToast({
               title: res.msg || '接口异常，请稍后再试~~',
               icon: 'none',
-              duration: 2000
+              duration: 4000
             });
           }
         });
@@ -54,7 +54,7 @@ export default {
         uni.showToast({
           title: '请先登录',
           icon: 'none',
-          duration: 2000
+          duration: 4000
         });
         return false;
       }
@@ -62,7 +62,7 @@ export default {
         uni.showToast({
           title: '请填写完整信息',
           icon: 'none',
-          duration: 2000
+          duration: 4000
         });
         return false;
       }
@@ -70,7 +70,7 @@ export default {
         uni.showToast({
           title: '手机格式不正确',
           icon: 'none',
-          duration: 2000
+          duration: 4000
         });
         return false;
       }
@@ -87,7 +87,7 @@ export default {
         if (res && res.code && res.code === 'Y') {
           uni.showToast({
             title: '保存成功',
-            duration: 2000
+            duration: 4000
           });
           setTimeout(() => {
             uni.switchTab({
@@ -98,7 +98,7 @@ export default {
           uni.showToast({
             title: res.msg || '保存失败',
             icon: 'none',
-            duration: 2000
+            duration: 4000
           });
         }
       });

@@ -107,7 +107,7 @@ export default {
           uni.showToast({
             title: res.msg || '接口异常，请稍后再试~~',
             icon: 'none',
-            duration: 2000
+            duration: 4000
           });
         }
       });
@@ -134,14 +134,14 @@ export default {
               success: (res) => {
                 uni.showToast({
                   title: '报名成功',
-                  duration: 2000
+                  duration: 4000
                 });
               },
               fail: (err) => {
                 uni.showToast({
                   title: '支付异常',
                   icon: 'none',
-                  duration: 2000
+                  duration: 4000
                 });
               }
             });
@@ -150,7 +150,7 @@ export default {
           uni.showToast({
             title: res.msg,
             icon: 'none',
-            duration: 2000
+            duration: 4000
           });
         }
       });

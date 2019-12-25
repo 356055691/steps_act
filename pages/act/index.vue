@@ -64,7 +64,7 @@ export default {
           uni.showToast({
             title: res.msg || '接口异常，请稍后再试~~',
             icon: 'none',
-            duration: 2000
+            duration: 4000
           });
         }
       });
@@ -115,7 +115,7 @@ export default {
             uni.showToast({
               title: '登录失败！',
               icon: 'none',
-              duration: 2000
+              duration: 4000
             });
           }
         }
@@ -157,7 +157,7 @@ export default {
               uni.showToast({
                 title: res.msg || '接口异常，请稍后再试~~',
                 icon: 'none',
-                duration: 2000
+                duration: 4000
               });
             }
           });
