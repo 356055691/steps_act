@@ -4,7 +4,10 @@
     <view class="btn-c">
       <button v-if="!isLogin" open-type="getUserInfo" @getuserinfo="getUserInfo" class="btn">一键登录</button>
       <template v-else>
-        <view class="btn" v-if="act.status === 0" @tap="payFun">立即报名</view>
+        <template v-if="act.status === 0">
+          <view class="btn" v-if="baseInfo.isEnroll === '1'" @tap="payFun">立即报名</view>
+          <view class="btn" v-if="baseInfo.isEnroll === '0'">已报名</view>
+        </template>
         <view class="btn" v-if="act.status === 1">报名已截止</view>
         <view class="btn" v-if="act.status === 2">活动已结束</view>
       </template>
@@ -17,9 +20,17 @@ import { mapState, mapMutations } from 'vuex';
 import { _POST } from '../../libs/http';
 
 export default {
+  watch: {
+    isLogin(val) {
+      if (val) {
+        this.getBaseInfo();
+      }
+    }
+  },
   data() {
     return {
-      act: {}
+      act: {},
+      baseInfo: {}
     };
   },
   computed: {
@@ -35,6 +46,30 @@ export default {
       setLogin: 'setLogin',
       setUser: 'setUser'
     }),
+    getBaseInfo() {
+      if (this.isLogin) {
+        _POST('/address/query', {
+          userId: this.isLogin
+        }).then((res) => {
+          if (res && res.code && res.code === 'Y') {
+            if (res.data) {
+              this.baseInfo = res.data;
+              if (!this.baseInfo.address || !this.baseInfo.area) {
+                uni.switchTab({
+                  url: '/pages/mine/index'
+                });
+              }
+            }
+          } else {
+            uni.showToast({
+              title: res.msg || '接口异常，请稍后再试~~',
+              icon: 'none',
+              duration: 4000
+            });
+          }
+        });
+      }
+    },
     getAds() {
       _POST('/activity/list', {}).then((res) => {
         if (res && res.code && res.code === 'S') {
