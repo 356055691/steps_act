@@ -2,10 +2,10 @@
   <view class="page-edit-adr">
     <input placeholder="请输入收货人姓名" v-model="contactName" />
     <input placeholder="请输入收货人电话" v-model="contactTel" />
-    <div class="city-input">
+    <view class="city-input">
       <input placeholder="请输入省市区" v-model="area" />
       <view class="cover" @tap="changeShow('QS_Picekr_city')"></view>
-    </div>
+    </view>
     <input placeholder="请输入详细地址" v-model="address" />
     <view class="edit-btn" @tap="editFun">保存</view>
     <QSpicker
