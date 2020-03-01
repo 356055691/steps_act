@@ -3,6 +3,7 @@
     <image mode="widthFix" class="index-pic" :src="act.pic"></image>
     <view class="btn-c">
       <button v-if="!isLogin" open-type="getUserInfo" @getuserinfo="getUserInfo" class="btn">一键登录</button>
+      <button v-else-if="noStep" class="btn" open-type="openSetting">授权获取步数</button>
       <template v-else>
         <template v-if="act.status === 0">
           <view class="btn" v-if="baseInfo.isEnroll === '1'" @tap="payFun">立即报名</view>
@@ -29,6 +30,7 @@ export default {
   },
   data() {
     return {
+      noStep: false,
       act: {},
       baseInfo: {}
     };
@@ -40,12 +42,66 @@ export default {
   },
   onShow() {
     this.getAds();
+    setTimeout(() => {
+      if (this.isLogin) {
+        this.getSteps();
+      } else {
+        this.steps = '';
+      }
+    }, 1000);
   },
   methods: {
     ...mapMutations({
       setLogin: 'setLogin',
       setUser: 'setUser'
     }),
+    getSteps() {
+      uni.getSetting({
+        success: (res) => {
+          if (JSON.stringify(res.authSetting) === '{}' || res.authSetting['scope.werun'] === undefined) {
+            // 首次校验
+            this.steopFun();
+          } else {
+            const werun = res.authSetting['scope.werun'];
+            if (werun) {
+              // 已同意
+              this.steopFun();
+            } else {
+              // 已拒绝
+              this.noStep = true;
+            }
+          }
+        }
+      });
+    },
+    steopFun() {
+      uni.getWeRunData({
+        success: (data) => {
+          _POST('/record/steps', {
+            encryptedData: data.encryptedData,
+            iv: data.iv,
+            userId: this.isLogin
+          }).then((res) => {
+            if (res && res.code && res.code === 'Y') {
+              if (res.data && res.data) {
+                this.steps = res.data.steps;
+                this.noStep = false;
+              }
+            } else {
+              uni.showToast({
+                title: res.msg || '接口异常，请稍后再试~~',
+                icon: 'none',
+                duration: 4000
+              });
+            }
+          });
+        },
+        fail: (error) => {
+          console.log(error);
+          this.noStep = true;
+        }
+      });
+    },
     getBaseInfo() {
       if (this.isLogin) {
         _POST('/address/query', {
@@ -112,7 +168,7 @@ export default {
                   data: res.userId,
                   success: () => {
                     this.setLogin(res.userId);
-                    // this.getSteps();
+                    this.getSteps();
                     uni.hideLoading();
                   }
                 });
