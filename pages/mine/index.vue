@@ -19,7 +19,7 @@
       </view>
       <view class="addr-c">
         <view class="title">收货地址</view>
-        <view class="text">{{ baseInfo.address }}</view>
+        <view class="text">{{ baseInfo.area }}{{ baseInfo.address }}</view>
       </view>
     </view>
     <navigator v-if="isLogin" url="/pages/mine/edit">

@@ -2,21 +2,43 @@
   <view class="page-edit-adr">
     <input placeholder="请输入收货人姓名" v-model="contactName" />
     <input placeholder="请输入收货人电话" v-model="contactTel" />
-    <input placeholder="请输入收货人地址" v-model="address" />
+    <div class="city-input">
+      <input placeholder="请输入省市区" v-model="area" />
+      <view class="cover" @tap="changeShow('QS_Picekr_city')"></view>
+    </div>
+    <input placeholder="请输入详细地址" v-model="address" />
     <view class="edit-btn" @tap="editFun">保存</view>
+    <QSpicker
+      type="city"
+      ref="QS_Picekr_city"
+      mode="bottom"
+      top="200px"
+      pickerId="city_1"
+      :dataSet="citySet"
+      showReset
+      @confirm="confirm($event)"
+    />
   </view>
 </template>
 
 <script>
 import { _POST } from '../../libs/http';
 import { mapState } from 'vuex';
+import QSpicker from '@/components/QuShe-picker/QuShe-picker.vue';
 
 export default {
+  components: {
+    QSpicker
+  },
   data() {
     return {
+      citySet: {
+        defaultValue: [0, 0, 0]
+      },
       contactName: '',
       contactTel: '',
-      address: ''
+      address: '',
+      area: ''
     };
   },
   computed: {
@@ -28,6 +50,16 @@ export default {
     this.getUserInfo();
   },
   methods: {
+    changeShow(name) {
+      this.$refs[name].show();
+    },
+    confirm(res) {
+      if (res && res.data && res.data.label) {
+        let city = res.data.label;
+        city = city.replace(/[\-]/g, '');
+        this.area = city;
+      }
+    },
     getUserInfo() {
       if (this.isLogin) {
         _POST('/address/query', {
@@ -38,6 +70,7 @@ export default {
               this.contactName = res.data.contact_name;
               this.contactTel = res.data.contact_tel;
               this.address = res.data.address;
+              this.area = res.data.area;
             }
           } else {
             uni.showToast({
@@ -58,7 +91,7 @@ export default {
         });
         return false;
       }
-      if (!this.contactName || !this.contactTel || !this.address) {
+      if (!this.contactName || !this.contactTel || !this.address || !this.area) {
         uni.showToast({
           title: '请填写完整信息',
           icon: 'none',
@@ -81,6 +114,7 @@ export default {
         contactName: this.contactName,
         contactTel: this.contactTel,
         address: this.address,
+        area: this.area,
         userId: this.isLogin
       }).then((res) => {
         uni.hideLoading();
@@ -113,6 +147,19 @@ export default {
   height: 100%;
   padding: 30upx;
   background-color: #fff;
+  .city-input {
+    position: relative;
+    .cover {
+      width: 690upx;
+      height: 80upx;
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 9;
+    }
+  }
   input {
     width: 690upx;
     line-height: 80upx;
