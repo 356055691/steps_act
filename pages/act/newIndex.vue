@@ -162,7 +162,7 @@ export default {
     font-size: 28upx;
     line-height: 60upx;
     text-align: center;
-    position: absolute;
+    position: fixed;
     bottom: 30upx;
     left: 250upx;
     right: 250upx;

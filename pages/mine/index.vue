@@ -87,7 +87,7 @@ export default {
     },
     goLogin() {
       uni.switchTab({
-        url: '/pages/act/index'
+        url: '/pages/act/newIndex'
       });
     }
   }
