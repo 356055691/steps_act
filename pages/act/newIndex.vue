@@ -93,7 +93,7 @@ export default {
         }
       });
     },
-      payFun() {
+    payFun() {
       uni.showLoading({
         title: '唤起支付中'
       });
@@ -117,6 +117,11 @@ export default {
                   title: '报名成功',
                   duration: 4000
                 });
+                setTimeout(() => {
+                  uni.switchTab({
+                    url: '/pages/mine/index'
+                  });
+                }, 4000);
               },
               fail: (err) => {
                 uni.showToast({
