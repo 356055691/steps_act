@@ -130,6 +130,7 @@ export default {
       _POST('/activity/list', {}).then((res) => {
         if (res && res.code && res.code === 'S') {
           this.act = res.data[0];
+          this.act.pic = `${this.act.pic}?tmp=${Math.random()}`;
         } else {
           uni.showToast({
             title: res.msg || '接口异常，请稍后再试~~',
@@ -245,17 +246,17 @@ export default {
     vertical-align: top;
   }
   .btn {
-    width: 250upx;
-    height: 60upx;
+    width: 350upx;
+    height: 80upx;
     border-radius: 10upx;
     background-color: #a5cd34;
     color: #fff;
-    font-size: 28upx;
-    line-height: 60upx;
+    font-size: 32upx;
+    line-height: 80upx;
     text-align: center;
     position: fixed;
-    bottom: 30upx;
-    left: 250upx;
+    bottom: 80upx;
+    left: 200upx;
     right: 250upx;
   }
 }
