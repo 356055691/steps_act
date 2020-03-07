@@ -113,11 +113,11 @@ export default {
           if (res && res.code && res.code === 'Y') {
             if (res.data) {
               this.baseInfo = res.data;
-              if (!this.baseInfo.address || !this.baseInfo.area) {
-                uni.switchTab({
-                  url: '/pages/mine/index'
-                });
-              }
+              // if (!this.baseInfo.address || !this.baseInfo.area) {
+              //   uni.switchTab({
+              //     url: '/pages/mine/index'
+              //   });
+              // }
             }
           } else {
             uni.showToast({
