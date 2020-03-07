@@ -41,6 +41,9 @@ export default {
     })
   },
   onShow() {
+    if(this.isLogin) {
+      this.getBaseInfo();
+    }
     this.getAds();
     setTimeout(() => {
       if (this.isLogin) {
